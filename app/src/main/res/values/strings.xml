@@ -3,4 +3,5 @@
     <string name="enter_email">Enter email</string>
     <string name="enter_password">Enter password</string>
     <string name="sign_in_register">Sign in / Register</string>
+    <string name="invalid_mail_id">Invalid Mail Id</string>
 </resources>

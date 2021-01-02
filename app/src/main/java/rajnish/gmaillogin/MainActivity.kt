@@ -2,6 +2,8 @@ package rajnish.gmaillogin
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -30,13 +32,21 @@ class MainActivity : AppCompatActivity() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
     }
 
-    fun signIn(): Unit {
-        val signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+    fun signIn() {
+//        if (isUserNameValid(binding.username.text.toString())) {
+            val signInIntent: Intent = mGoogleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+//        } else {
+//            Toast.makeText(
+//                baseContext,
+//                resources.getString(R.string.invalid_mail_id),
+//                Toast.LENGTH_LONG
+//            ).show()
+//        }
     }
 
     override fun onStart() {
@@ -67,6 +77,15 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, ProfileActivity::class.java)
             intent.putExtra("gmailAcc", account)
             startActivity(intent)
+        }
+    }
+
+
+    private fun isUserNameValid(username: String): Boolean {
+        return if (username.contains('@')) {
+            Patterns.EMAIL_ADDRESS.matcher(username).matches()
+        } else {
+            username.isNotBlank()
         }
     }
 }
